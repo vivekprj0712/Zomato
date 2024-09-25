@@ -1,9 +1,12 @@
 package com.Entity;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -27,4 +30,7 @@ public class CustomerEntity {
 	String gender;
 	Integer bornYear;
 	String contactNum;
+	
+	@OneToMany(mappedBy = "customer")
+	List<CustomerAddressEntity> customerAddress;
 }
