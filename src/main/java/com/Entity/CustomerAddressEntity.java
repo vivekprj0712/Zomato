@@ -23,8 +23,8 @@ public class CustomerAddressEntity {
 	String title;
 	String addressLine;
 	Integer pincode;
-	Float lat;
-	Float log;
+	Float latitude;
+	Float longitude;
 
 	@ManyToOne
 	@JoinColumn(name = "customerId")
