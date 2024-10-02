@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Entity.RestaurantEntity;
+import com.Entity.RoleEntity;
 import com.Repository.RestaurantRepository;
+import com.Repository.RoleRepository;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,10 +27,14 @@ public class RestaurantController {
 	@Autowired
 	RestaurantRepository restaurantRepository;
 	
+	@Autowired
+	RoleRepository roleRepository;
+	
 	//add Restaurant
 	@PostMapping("restaurants")
 	public RestaurantEntity addRestaurant(@RequestBody RestaurantEntity restaurantEntity) {
-	
+		Optional<RoleEntity> role = roleRepository.findById(3);
+		restaurantEntity.setRole(role.get());
 		restaurantRepository.save(restaurantEntity);
 		return restaurantEntity;
 	}
