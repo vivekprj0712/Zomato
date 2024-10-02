@@ -28,6 +28,7 @@ public class CustomerController {
 	// read All Customer 
 	@GetMapping("customers")
 	public List<CustomerEntity> getAllCustomers() {
+		
 		List<CustomerEntity> customers = customerRepository.findAll();
 		return customers;
 	}
