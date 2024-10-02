@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -26,11 +28,16 @@ public class CustomerEntity {
 	String email;
 	String password;
 	String profilePicPath;
-	String otp;
+	Integer otp;
 	String gender;
 	Integer bornYear;
 	String contactNum;
 	
 	@OneToMany(mappedBy = "customer")
 	List<CustomerAddressEntity> customerAddress;
+	
+	@ManyToOne
+	@JoinColumn(name = "roleId")
+	RoleEntity role;
+	
 }
