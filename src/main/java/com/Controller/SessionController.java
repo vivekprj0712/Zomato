@@ -48,7 +48,7 @@ public class SessionController {
 		return customerEntity;
 	}
 	
-	@GetMapping("authentication/{email}/{password}")
+	@GetMapping("authentication/{email}/{password}") // some problem pending....
 	public String authentication(@PathVariable("email") String email , @PathVariable("password") String password ,CustomerEntity customerEntity, RestaurantEntity restaurantEntity , HttpSession session) {
 		CustomerEntity loggedInCustomer = customerRepository.findByEmail(email);
 		RestaurantEntity loggedInRestaurant = restaurantRepository.findByEmail(email);
