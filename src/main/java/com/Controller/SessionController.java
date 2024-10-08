@@ -1,5 +1,12 @@
 package com.Controller;
 
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Entity.CustomerEntity;
@@ -9,18 +16,6 @@ import com.Repository.CustomerRepository;
 import com.Repository.RestaurantRepository;
 import com.Repository.RoleRepository;
 import com.Service.MailerService;
-
-import jakarta.mail.Session;
-import jakarta.servlet.http.HttpSession;
-
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -48,38 +43,33 @@ public class SessionController {
 		return customerEntity;
 	}
 	
-	@GetMapping("authentication/{email}/{password}") // some problem pending....
-	public String authentication(@PathVariable("email") String email , @PathVariable("password") String password ,CustomerEntity customerEntity, RestaurantEntity restaurantEntity , HttpSession session) {
+	@GetMapping("authentication/{email}/{password}") 
+	public String authentication(@PathVariable("email") String email , @PathVariable("password") String password) {
 		CustomerEntity loggedInCustomer = customerRepository.findByEmail(email);
 		RestaurantEntity loggedInRestaurant = restaurantRepository.findByEmail(email);
 		if(loggedInCustomer == null && loggedInRestaurant == null) {
-			return null;
+			return "not Found";
 		}else {
 			
 			if(loggedInCustomer != null) {
-				session.setMaxInactiveInterval(60*60); 
-				session.setAttribute("customer", loggedInCustomer); //set student into session 
 				
 				if(!loggedInCustomer.getPassword().matches(password)) {
-					return null;
+					return "password Invalid";
 				}else if(loggedInCustomer.getRole() == null) {
-					return null;
-				}else if(loggedInCustomer.getRole() == customerEntity.getRole()) {
+					return "Invalid Role";
+				}else if(loggedInCustomer.getRole().getRoleName().equalsIgnoreCase("CUSTOMER") ) {
 					System.out.println(loggedInCustomer.getRole());
-					System.out.println(customerEntity.getRole());
+					System.out.println();
 					return "Customer";	
 				}
 			}else if(loggedInRestaurant != null) {
-					session.setMaxInactiveInterval(60*60); 
-					session.setAttribute("restaurant", loggedInRestaurant); //set student into session 
 					
 					if(!loggedInRestaurant.getPassword().matches(password)) {
-						return null;
+						return "password Invalid";
 					}else if(loggedInRestaurant.getRole() == null) {
-						return null;
-					}else if(loggedInRestaurant.getRole() == restaurantEntity.getRole()) {
+						return "Invalid Role";
+					}else if(loggedInRestaurant.getRole().getRoleId() == 3) {
 						System.out.println(loggedInRestaurant.getRole());
-						System.out.println(restaurantEntity.getRole());
 						return "Restaurant";
 					}
 				}
@@ -101,7 +91,7 @@ public class SessionController {
 		}
 	}
 	
-	@GetMapping("updatepassword/{email}/{password}/{confirmpassword}/{otp}") // some problem pending....
+	@GetMapping("updatepassword/{email}/{password}/{confirmpassword}/{otp}") 
 	public CustomerEntity updatePassword(@PathVariable("email") String email , @PathVariable("password") String password,@PathVariable("confirmpassword") String confirmpassword,@PathVariable("otp") Integer otp) {
 		if(!password.equals(confirmpassword)) {
 			System.out.println("error...1");
@@ -113,12 +103,17 @@ public class SessionController {
 		        System.out.println("error...2");
 		        return null;
 		    }
-			if( otp == -1 || dbCustomer.getOtp() != otp || dbCustomer.getOtp() == null)
+			if( otp == -1 || dbCustomer.getOtp().intValue() != otp || dbCustomer.getOtp() == null)
 			{
-				System.out.println("error...3");
+				System.out.println("error...333");
 				System.out.println(otp);
 				System.out.println(dbCustomer.getOtp());
-				return null;
+				System.out.println("===");
+				System.out.println(otp==-1);
+				System.out.println(	dbCustomer.getOtp() != otp);
+				System.out.println(dbCustomer.getOtp() == null);
+
+						 return null;
 			}else {
 				dbCustomer.setPassword(password);
 				dbCustomer.setOtp(-1);
