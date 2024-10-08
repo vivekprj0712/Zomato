@@ -22,10 +22,10 @@ public class RoleEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer roleId;
 	String roleName;
+//	
+//	@OneToMany(mappedBy = "role")
+//	List<CustomerEntity> customerEntity;
 	
-	@OneToMany(mappedBy = "role")
-	List<CustomerEntity> customerEntity;
-	
-	@OneToMany(mappedBy = "role")
-	List<RestaurantEntity> restaurantEntity;
+//	@OneToMany(mappedBy = "role")
+//	List<RestaurantEntity> restaurantEntity;
 }
