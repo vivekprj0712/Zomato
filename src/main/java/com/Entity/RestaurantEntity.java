@@ -43,4 +43,7 @@ public class RestaurantEntity {
 	@ManyToOne
 	@JoinColumn(name = "roleId")
 	RoleEntity role;
+	
+	@OneToMany(mappedBy = "restaurant")
+	List<ItemEntity> itemEntity;
 }
