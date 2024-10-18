@@ -36,6 +36,7 @@ public class RestaurantEntity {
 	String password;
 	Integer active;
 	String restaurantImagePath;
+	String authToken;
 
 	@OneToMany(mappedBy = "restaurant")
 	List<MenuEntity> menuEntity;
