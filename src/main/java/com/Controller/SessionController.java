@@ -24,6 +24,7 @@ import com.Repository.CustomerRepository;
 import com.Repository.RestaurantRepository;
 import com.Repository.RoleRepository;
 import com.Service.MailerService;
+import com.Service.TokenService;
 
 
 
@@ -48,6 +49,9 @@ public class SessionController {
 	
 	@Autowired
 	MailerService mailerService;
+	
+	@Autowired
+	TokenService tokenService;
 	
 	// Sign up & add customer
 	@PostMapping("customersignup")
@@ -98,7 +102,7 @@ public class SessionController {
 			}
 		}
 	
-	@PostMapping("authentication/{email}/{password}")
+	@PostMapping("authentication")
 	public ResponseEntity<?> authentication(@RequestBody LoginDto loginDto) {
 		
 		   CustomerEntity loggedInCustomer = customerRepository.findByEmail(loginDto.getEmail());
@@ -119,9 +123,11 @@ public class SessionController {
 					System.out.println(loggedInCustomer.getRole());
 					System.out.println();
 					HashMap<String, Object> map = new HashMap<>();
-					map.put("restaurants", restaurantRepository.findAll());
+					String authToken = tokenService.authToken();
+					loggedInCustomer.setAuthToken(authToken);
+					customerRepository.save(loggedInCustomer);
 					map.put("customer", loggedInCustomer);
-					map.put("authToken", "customer");
+					map.put("restaurants", restaurantRepository.findAll());
 					return new ResponseEntity<>(map, HttpStatus.OK);
 				}
 			}else if(loggedInRestaurant != null) {
@@ -133,7 +139,10 @@ public class SessionController {
 					}else if(loggedInRestaurant.getRole().getRoleId() == 3) {
 						System.out.println(loggedInRestaurant.getRole());
 						HashMap<String, Object> map = new HashMap<>();
-						map.put("authToken", "restaurant");
+						String authToken = tokenService.authToken();
+						loggedInRestaurant.setAuthToken(authToken);
+						restaurantRepository.save(loggedInRestaurant);
+						map.put("restaurant", loggedInRestaurant);
 						return new ResponseEntity<>(map, HttpStatus.OK);
 					}
 				}
