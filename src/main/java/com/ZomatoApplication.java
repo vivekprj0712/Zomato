@@ -9,10 +9,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @SpringBootApplication
 public class ZomatoApplication {
 
+	
 	public static void main(String[] args) {
 		SpringApplication.run(ZomatoApplication.class, args);
 	}
 	
+	// Password
 	@Bean
 	public PasswordEncoder createPasswordEncoder() {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
