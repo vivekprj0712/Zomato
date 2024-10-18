@@ -32,6 +32,7 @@ public class CustomerEntity {
 	String gender;
 	Integer bornYear;
 	String contactNum;
+	String authToken;
 	
 	@OneToMany(mappedBy = "customer")
 	List<CustomerAddressEntity> customerAddress;
