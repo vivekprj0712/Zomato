@@ -11,5 +11,6 @@ import com.Entity.CustomerEntity;
 public interface CustomerRepository extends JpaRepository<CustomerEntity, Integer>{
 			
 	CustomerEntity findByEmail(String email);
+	Optional<CustomerEntity> findByAuthToken(String authToken);
 
 }
